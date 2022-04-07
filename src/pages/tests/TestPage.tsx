@@ -6,12 +6,15 @@ import {
   HStack,
   Button,
   Box,
+  CircularProgress,
+  CircularProgressLabel,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { assertUnreachable } from "../../helpers/assertUnreachable";
 import { TaskViewer } from "./components/TaskViewer/TaskViewer";
+import { TestResult, TestResultCalculator } from "./helpers/TestResultCalculator/TestResultCalculator";
 import { getTest, TaskDto, TestDto } from "./TestPage.api";
 
 export interface TestPageProps {
@@ -19,10 +22,11 @@ export interface TestPageProps {
 }
 export interface TestViewProps {
   test: TestDto;
+  resultCalculator: TestResultCalculator;
 }
 
 export const TestView = (props: TestViewProps) => {
-  const { test } = props;
+  const { test, resultCalculator } = props;
   const [currentTask, setCurrentTask] = useState<TaskDto>(test.tasks[0]);
   const [answers, setAnswers] = useState(new Map<string, string>());
   const [result, setResult] = useState<number>();
@@ -54,7 +58,6 @@ export const TestView = (props: TestViewProps) => {
     }
   };
 
-  // TODO: Extract to the calculator for the UI test
   const handleSubmitTest = () => {
     let correctAnswersCount = 0;
 
@@ -74,7 +77,7 @@ export const TestView = (props: TestViewProps) => {
       }
     });
 
-    setResult(correctAnswersCount / test.tasks.length);
+    setResult(resultCalculator.calculate(correctAnswersCount, test.tasks.length))
   };
 
   const currentStepIndex = test.tasks.findIndex(
@@ -88,10 +91,28 @@ export const TestView = (props: TestViewProps) => {
   const isAnswered = currentTask ? !!answers.get(currentTask.id) : false;
 
   if (result !== undefined) {
-    <div>
-      <Heading as="h2">Test Finished!</Heading>
-      <p>Result: {result}</p>
-    </div>;
+    const percentageScore =  result.score * 100;
+    return (
+      <VStack spacing={3}>
+        <Container maxW="container.sm">
+          <Box paddingTop={3} paddingBottom={3}>
+            <Heading as="h2">{result.title}</Heading>
+            <Text fontSize="md">
+              {result.description}
+            </Text>
+            <Text fontSize="md">
+              {`Has Passed: ${result.hasPassed}`}
+            </Text>
+          </Box>
+          <Box paddingTop={3} paddingBottom={3}>
+            <CircularProgress value={percentageScore} width="200px">
+              <CircularProgressLabel>{`${percentageScore}%`}</CircularProgressLabel>
+            </CircularProgress>
+          </Box>
+          <Button>TODO: implement reset form</Button>
+        </Container>
+      </VStack>
+    )
   }
 
   return (
@@ -115,7 +136,6 @@ export const TestView = (props: TestViewProps) => {
           >
             Go to previous task
           </Button>
-          <Button>TODO: implement reset form</Button>
           {isLastTask ? (
             <Button disabled={!isAnswered} onClick={handleSubmitTest}>
               submit test
@@ -154,5 +174,7 @@ export const TestPage = (props: TestPageProps) => {
     return assertUnreachable(data);
   }
 
-  return <TestView test={data} />;
+  const testResultCalculator = new TestResultCalculator(data.passThreshold, data.resultInfos);
+
+  return <TestView test={data} resultCalculator={testResultCalculator} />;
 };

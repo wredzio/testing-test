@@ -19,9 +19,20 @@ export interface InputTaskDto extends BaseTask {
 
 export type TaskDto = InputTaskDto;
 
+export interface ResultInfoDto {
+	title: string;
+	description?: string;
+}
+
+export interface PassThresholdDto {
+	value: number;
+}
+
 export interface TestDto {
   id: string;
   tasks: TaskDto[];
+  resultInfos: ResultInfoDto[];
+  passThreshold: PassThresholdDto;
 }
 
 export const getTest = async (id: string): Promise<TestDto> => {
