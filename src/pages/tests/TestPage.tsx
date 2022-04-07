@@ -29,7 +29,7 @@ export const TestView = (props: TestViewProps) => {
   const { test, resultCalculator } = props;
   const [currentTask, setCurrentTask] = useState<TaskDto>(test.tasks[0]);
   const [answers, setAnswers] = useState(new Map<string, string>());
-  const [result, setResult] = useState<number>();
+  const [result, setResult] = useState<TestResult>();
 
   const updateAnswers = (task: TaskDto, answer: string) => {
     setAnswers((prev) => new Map([...prev, [task.id, answer]]));

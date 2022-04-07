@@ -12,7 +12,7 @@ describe("TestPage", () => {
 
   it("should show test result when user submit the test", async () => {
     // given
-    const { container, findByText, findByRole, getByRole } = render(
+    const { findByText, findByRole, getByRole } = render(
       <AppProvider>
         <TestPage id={testId1} />
       </AppProvider>
@@ -20,6 +20,9 @@ describe("TestPage", () => {
 
     // then
     await findByText("Test Page");
+
+    // then
+    expect(getByRole("button", { name: "Go to next task" })).toBeDisabled();
 
     // when
     const task1Input = getByRole("textbox", {
@@ -47,6 +50,6 @@ describe("TestPage", () => {
     userEvent.click(getByRole("button", { name: "submit test" }));
 
     // then
-    await findByText("Test Finished!");
+    await findByText("You failed!");
   });
 });
