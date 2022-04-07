@@ -18,6 +18,7 @@ export const InputTask: React.FC<InputTaskProps> = (props) => {
           id={id}
           type="text"
           onChange={(e) => onChange(task, e.target.value)}
+          autoComplete="false"
         />
       </FormControl>
     </Box>
