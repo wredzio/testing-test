@@ -1,5 +1,4 @@
-import clamp from "lodash/clamp";
-import last from "lodash/last";
+import { clamp, last } from "lodash";
 import { formatProgress, Percentage } from "../../../../helpers/formatProgress";
 import { PassThresholdDto, ResultInfoDto } from "../../TestPage.api";
 

@@ -1,4 +1,4 @@
-import random from "lodash/random";
+import { random } from "lodash";
 import { Percentage } from "../../../../helpers/formatProgress";
 import { TestResult, TestResultCalculator } from "./TestResultCalculator";
 import { generateFailResultInfos, successResultInfo } from "./TestResultCalculator.mock";
