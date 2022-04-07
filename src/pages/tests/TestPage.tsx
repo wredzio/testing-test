@@ -8,7 +8,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { assertUnreachable } from "../../helpers/assertUnreachable";
 import { TaskViewer } from "./components/TaskViewer/TaskViewer";
@@ -23,9 +23,9 @@ export interface TestViewProps {
 
 export const TestView = (props: TestViewProps) => {
   const { test } = props;
-  const [currentTask, setCurrentTask] = React.useState<TaskDto>(test.tasks[0]);
-  const [answers, setAnswers] = React.useState(new Map<string, string>());
-  const [result, setResult] = React.useState<number>();
+  const [currentTask, setCurrentTask] = useState<TaskDto>(test.tasks[0]);
+  const [answers, setAnswers] = useState(new Map<string, string>());
+  const [result, setResult] = useState<number>();
 
   const updateAnswers = (task: TaskDto, answer: string) => {
     setAnswers((prev) => new Map([...prev, [task.id, answer]]));
