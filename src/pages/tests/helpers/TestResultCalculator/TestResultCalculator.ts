@@ -25,18 +25,6 @@ export class TestResultCalculator {
   constructor(private passThreshold: PassThreshold, private testResultInfo: TestResultInfo[]) {}
 
   calculate(correctTasks: number, totalTasks: number): TestResult {
-    if (correctTasks < 0) {
-      throw new Error("Number of correct tasks can not be less than 0");
-    }
-
-    if (totalTasks <= 0) {
-      throw new Error("Number of total tasks can not be less or equal to 0");
-    }
-
-    if (correctTasks > totalTasks) {
-      throw new Error("Number of correct tasks can not be greater that number of total tasks");
-    }
-
     const { progressValue, unitInterval } = formatProgress(correctTasks / totalTasks);
     const score = unitInterval;
     const passedResultInfo = last(this.testResultInfo);
