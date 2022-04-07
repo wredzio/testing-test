@@ -1,5 +1,6 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const queryClient = new QueryClient();
 
@@ -10,6 +11,8 @@ interface AppProviderProps {
 export const AppProvider = (props: AppProviderProps) => {
   const { children } = props;
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <ChakraProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </ChakraProvider>
   );
 };

@@ -1,5 +1,6 @@
-import React from 'react';
-import { InputTaskDto } from '../../TestPage.api';
+import { Box, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import React from "react";
+import { InputTaskDto } from "../../TestPage.api";
 
 interface InputTaskProps {
   task: InputTaskDto;
@@ -7,12 +8,18 @@ interface InputTaskProps {
 }
 
 export const InputTask: React.FC<InputTaskProps> = (props) => {
-  const { task, onChange } = props
+  const { task, onChange } = props;
   const { question, correctAnswer, id } = task;
   return (
-    <div className="InputTask">
-      <label htmlFor={id}>{question}</label>
-      <input id={id} type="text" onChange={e => onChange(task, e.target.value)} />
-    </div>
-  )
-}
+    <Box>
+      <FormControl>
+        <FormLabel htmlFor={id}>{question}</FormLabel>
+        <Input
+          id={id}
+          type="text"
+          onChange={(e) => onChange(task, e.target.value)}
+        />
+      </FormControl>
+    </Box>
+  );
+};
