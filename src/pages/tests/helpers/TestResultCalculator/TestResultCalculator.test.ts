@@ -19,6 +19,7 @@ describe("TestResultCalculator", () => {
     {
       totalTasks: 10,
       correctTask: 5,
+      // Thanks to the test I know that passTresholds should be specified in numbers 0-100 not 0-1
       passThreshold: 30,
       numberOfFailResultInfos: random(1, maxNumberOfFailResultInfos),
       expectedResult: { hasPassed: true, score: 0.5, ...successResultInfo },

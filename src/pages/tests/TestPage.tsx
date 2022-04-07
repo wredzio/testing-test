@@ -6,6 +6,8 @@ import {
   HStack,
   Button,
   Box,
+  CircularProgress,
+  CircularProgressLabel,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
@@ -89,6 +91,7 @@ export const TestView = (props: TestViewProps) => {
   const isAnswered = currentTask ? !!answers.get(currentTask.id) : false;
 
   if (result !== undefined) {
+    const percentageScore =  result.score * 100;
     return (
       <VStack spacing={3}>
         <Container maxW="container.sm">
@@ -101,7 +104,12 @@ export const TestView = (props: TestViewProps) => {
               {`Has Passed: ${result.hasPassed}`}
             </Text>
           </Box>
-            <Button>TODO: implement reset form</Button>
+          <Box paddingTop={3} paddingBottom={3}>
+            <CircularProgress value={percentageScore} width="200px">
+              <CircularProgressLabel>{`${percentageScore}%`}</CircularProgressLabel>
+            </CircularProgress>
+          </Box>
+          <Button>TODO: implement reset form</Button>
         </Container>
       </VStack>
     )
@@ -128,7 +136,6 @@ export const TestView = (props: TestViewProps) => {
           >
             Go to previous task
           </Button>
-          <Button>TODO: implement reset form</Button>
           {isLastTask ? (
             <Button disabled={!isAnswered} onClick={handleSubmitTest}>
               submit test

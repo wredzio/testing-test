@@ -10,7 +10,7 @@ const test1: TestDto = {
     { id: "2", _type: "Input", question: "Are you going to drink today?", title: "Beer question", correctAnswer: "jeszcze jak" },
     { id: "3", _type: "Input", question: "Do you tolerate CSS? 😈", title: "CSS question", correctAnswer: "no" },
   ],
-  passThreshold: { value: 1 },
+  passThreshold: { value: 100 },
   resultInfos: [
     { title: "You failed!", description: "Next time, check the answers in the TestPage.api.mock.ts"},
     { title: "Test finished!", description: "Cool, good job!"},
