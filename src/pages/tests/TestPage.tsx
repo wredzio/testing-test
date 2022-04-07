@@ -74,7 +74,7 @@ export const TestView = (props: TestViewProps) => {
       }
     });
 
-    setResult(correctAnswersCount / test.tasks.length); // TODO: this is throwing errors
+    setResult(correctAnswersCount / test.tasks.length);
   };
 
   const currentStepIndex = test.tasks.findIndex(
@@ -89,7 +89,7 @@ export const TestView = (props: TestViewProps) => {
 
   if (result !== undefined) {
     <div>
-      Test finished!
+      <Heading as="h2">Test Finished!</Heading>
       <p>Result: {result}</p>
     </div>;
   }
@@ -100,7 +100,7 @@ export const TestView = (props: TestViewProps) => {
         <Box paddingTop={3} paddingBottom={3}>
           <Heading as="h1">Test Page</Heading>
           <Text fontSize="md">
-            Task {currentStepIndex + 1} {test.tasks.length}
+            Task {currentStepIndex + 1} out of {test.tasks.length}
           </Text>
         </Box>
         <TaskViewer
