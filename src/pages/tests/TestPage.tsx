@@ -56,7 +56,6 @@ export const TestView = (props: TestViewProps) => {
     }
   };
 
-  // TODO: Extract to the calculator for the UI test
   const handleSubmitTest = () => {
     let correctAnswersCount = 0;
 
@@ -90,19 +89,22 @@ export const TestView = (props: TestViewProps) => {
   const isAnswered = currentTask ? !!answers.get(currentTask.id) : false;
 
   if (result !== undefined) {
-    <VStack spacing={3}>
-      <Container maxW="container.sm">
-        <Box paddingTop={3} paddingBottom={3}>
-          <Heading as="h2">{result.title}</Heading>
-          <Text fontSize="md">
-            {result.description}
-          </Text>
-          <Text fontSize="md">
-            {`Has Passed: ${result.hasPassed}`}
-          </Text>
-        </Box>
-      </Container>
-    </VStack>
+    return (
+      <VStack spacing={3}>
+        <Container maxW="container.sm">
+          <Box paddingTop={3} paddingBottom={3}>
+            <Heading as="h2">{result.title}</Heading>
+            <Text fontSize="md">
+              {result.description}
+            </Text>
+            <Text fontSize="md">
+              {`Has Passed: ${result.hasPassed}`}
+            </Text>
+          </Box>
+            <Button>TODO: implement reset form</Button>
+        </Container>
+      </VStack>
+    )
   }
 
   return (
