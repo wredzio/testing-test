@@ -1,16 +1,23 @@
 import axios from "axios";
 
-interface CheckboxTask {
-  _type: "Checkbox";
-  numberOdCheckbox: number;
+interface BaseTask {
+  id: string;
+  title: string;
+  description?: string;
 }
 
-interface InputTask {
+export interface CheckboxTaskDto extends BaseTask {
+  _type: "Checkbox";
+  numberOfCheckbox: number;
+}
+
+export interface InputTaskDto extends BaseTask {
   _type: "Input";
   question: string;
+  correctAnswer: string;
 }
 
-type TaskDto = CheckboxTask | InputTask;
+export type TaskDto = InputTaskDto;
 
 export interface TestDto {
   id: string;

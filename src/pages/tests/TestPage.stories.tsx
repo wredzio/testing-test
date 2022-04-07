@@ -1,7 +1,7 @@
 import React from "react";
-import { TestPage, TestPageProps } from "./test-page";
+import { TestPage, TestPageProps } from "./TestPage";
 import { Story, Meta } from "@storybook/react";
-import { testId1, testServiceHandlers } from "./test-api.mock";
+import { testId1, testServiceHandlers } from "./TestPage.api.mock";
 
 export default {
   component: TestPage,
