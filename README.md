@@ -21,4 +21,4 @@ Prezentacja w większości oparta o materiały z kursu: https://architekturanafr
 # Zadanka
 
 1. Jakie testy widziałbyś w swoim projekcie (no coding required)
-2. Sfixować bugi z boarda na Trello: https://trello.com/invite/b/sHONBtGE/bed4f70664b9afe2aa8341df6c987c08/testing-with-jest i napisać do nich testy
+2. Zrobić taski z boarda na Trello: https://trello.com/invite/b/sHONBtGE/bed4f70664b9afe2aa8341df6c987c08/testing-with-jest i napisać do nich testy

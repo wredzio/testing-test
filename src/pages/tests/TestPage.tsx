@@ -84,6 +84,10 @@ export const TestPage = (props: TestPageProps) => {
     setResult(correctAnswersCount / data.tasks.length) // TODO: this is throwing errors
   }
 
+  const handleResetTest = () => {
+    console.log("Functionality not yet implemented");
+  }
+
   const currentStepIndex = data?.tasks.findIndex(task => task.id === currentTask?.id);
   const x = currentStepIndex !== undefined && currentStepIndex > -1;
 
@@ -109,7 +113,7 @@ export const TestPage = (props: TestPageProps) => {
           <TaskViewer key={currentTask.id} task={currentTask} onChange={updateAnswers} />
           <div>
             <button disabled={isFirstTask} onClick={() => handleGoToStep("previous")}>Go to previous task</button>
-            <button>TODO: implement reset form</button>
+            <button onClick={handleResetTest}>TODO: implement reset form</button>
             {isLastTask ?
               <button disabled={!isAnswered} onClick={handleSubmitTest}>submit test</button>
             :
