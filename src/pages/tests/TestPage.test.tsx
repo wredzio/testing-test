@@ -1,4 +1,4 @@
-import { findByRole, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import { setupMockServer } from '../../shared/appProvider/api/mock.server';
 import { AppProvider } from '../../shared/appProvider/app-provider';
@@ -21,8 +21,8 @@ describe("TestPage", () => {
     // then
     await findByText("Test Page");
 
-    // then
-    expect(getByRole("button", { name: "Go to next task" })).toBeDisabled();
+    // // then
+    // expect(getByRole("button", { name: "Go to next task" })).toBeDisabled();
 
     // when
     const task1Input = getByRole("textbox", {
@@ -51,5 +51,42 @@ describe("TestPage", () => {
 
     // then
     await findByText("You failed!");
+  });
+
+  it("should allow user go to next page when", async () => {
+    // given
+    const { findByText, findByRole, getByRole } = render(
+      <AppProvider>
+        <TestPage id={testId1} />
+      </AppProvider>
+    );
+
+    // then
+    expect(getByRole("button", { name: "Go to next task" })).toBeDisabled();
+
+    // when
+    const taskInput = getByRole("textbox", {
+      name: "Do you like dogs?",
+    }) as HTMLInputElement;
+    userEvent.type(taskInput, "yes");
+
+    // then
+    expect(getByRole("button", { name: "Go to next task" })).toBeEnabled();
+
+    // when
+    userEvent.type(taskInput, "");
+
+    // then
+    expect(getByRole("button", { name: "Go to next task" })).toBeDisabled();
+
+    // --------------------------------------------------------
+
+    // when
+    userEvent.type(taskInput, "yes");
+    userEvent.click(getByRole("button", { name: "Go to next task" }));
+    userEvent.click(getByRole("button", { name: "Go to previous task" }));
+
+    // then
+    expect(await findByRole("button", { name: "Go to next task" })).toBeDisabled();
   });
 });

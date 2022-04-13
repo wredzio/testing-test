@@ -60,7 +60,7 @@ describe("TestResultCalculator", () => {
     number of correct tasks: ${testCase.correctTask}, 
     pass threshold: ${testCase.passThreshold},
     numberOfFailedResults: ${testCase.numberOfFailResultInfos}
-    should return ${JSON.stringify(testCase.expectedResult)}`, async () => {
+    should return ${JSON.stringify(testCase.expectedResult)}`, () => {
       const resultInfos = [...failResultInfos.slice(0, testCase.numberOfFailResultInfos), successResultInfo];
       const testResultCalculator = new TestResultCalculator({ value: testCase.passThreshold }, resultInfos);
       const testResult = testResultCalculator.calculate(testCase.correctTask, testCase.totalTasks);
@@ -79,3 +79,15 @@ describe("TestResultCalculator", () => {
     it.todo("if number of correct tasks is greater that number of total tasks");
   });
 });
+
+
+
+// const correctAnswerCases = [
+//     ["answer", "answer"],
+//     // ["Answer", "answer"], // TODO: update the input task
+//     ["longanswer", "long answer"],
+//     ["long  answer", "long answer"],
+//     ["Super long answer.", "super long answer"],
+//   ];
+
+//   it.each(correctAnswerCases)(
