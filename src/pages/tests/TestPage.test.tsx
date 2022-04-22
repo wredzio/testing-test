@@ -1,55 +1,47 @@
-import { findByRole, render } from '@testing-library/react';
+import { findByRole, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { setupMockServer } from '../../shared/appProvider/api/mock.server';
-import { AppProvider } from '../../shared/appProvider/app-provider';
-import { TestPage } from './TestPage';
+import { setupMockServer } from "../../shared/appProvider/api/mock.server";
+import { AppProvider } from "../../shared/appProvider/app-provider";
+import { TestPage } from "./TestPage";
 import "@testing-library/jest-dom/extend-expect";
-import { testId1, testServiceHandlers } from './TestPage.api.mock';
+import "../../shared/testExtensions/TestExtensions";
+import { testId1, testServiceHandlers } from "./TestPage.api.mock";
+import { TestPagePageObject } from "./TestPage.po";
 
 describe("TestPage", () => {
-
   setupMockServer(...testServiceHandlers);
 
   it("should show test result when user submit the test", async () => {
     // given
-    const { findByText, findByRole, getByRole } = render(
-      <AppProvider>
-        <TestPage id={testId1} />
-      </AppProvider>
-    );
+    const testPagePO = TestPagePageObject.render(testId1);
 
     // then
-    await findByText("Test Page");
+    await testPagePO.rootContainer.expectTextDisplayed("Test Page");
+    await testPagePO.rootContainer.expectTextDisplayed("Task 1 out of 3");
+    await testPagePO.rootContainer.expectTextDisplayed("Dogs question");
+
+    const testNavigatorPO = testPagePO.getTestNavigatorPageObject();
+    // when
+    testPagePO.answerQuestion("yes");
+    testNavigatorPO.goToNextTask();
 
     // then
-    expect(getByRole("button", { name: "Go to next task" })).toBeDisabled();
+    await testPagePO.rootContainer.expectTextDisplayed("Beer question");
+    await testPagePO.rootContainer.expectTextDisplayed("Task 2 out of 3");
 
     // when
-    const task1Input = getByRole("textbox", {
-      name: "Do you like dogs?",
-    }) as HTMLInputElement;
-    userEvent.type(task1Input, "yes");
-    userEvent.click(getByRole("button", { name: "Go to next task" }));
+    testPagePO.answerQuestion("yes");
+    testNavigatorPO.goToNextTask();
 
     // then
-    const task2Input = (await findByRole("textbox", {
-      name: "Are you going to drink today?",
-    })) as HTMLInputElement;
+    await testPagePO.rootContainer.expectTextDisplayed("CSS question");
+    await testPagePO.rootContainer.expectTextDisplayed("Task 3 out of 3");
 
     // when
-    userEvent.type(task2Input, "yes");
-    userEvent.click(getByRole("button", { name: "Go to next task" }));
+    testPagePO.answerQuestion("yes");
+    testNavigatorPO.submitTest();
 
     // then
-    const task3Input = (await findByRole("textbox", {
-      name: "Do you tolerate CSS? 😈",
-    })) as HTMLInputElement;
-
-    // when
-    userEvent.type(task3Input, "yes");
-    userEvent.click(getByRole("button", { name: "submit test" }));
-
-    // then
-    await findByText("You failed!");
+    await testPagePO.rootContainer.expectTextDisplayed("You failed!");
   });
 });

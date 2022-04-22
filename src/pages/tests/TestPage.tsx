@@ -14,7 +14,11 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { assertUnreachable } from "../../helpers/assertUnreachable";
 import { TaskViewer } from "./components/TaskViewer/TaskViewer";
-import { TestResult, TestResultCalculator } from "./helpers/TestResultCalculator/TestResultCalculator";
+import { TestNavigator } from "./components/TestNavigator/TestNavigator";
+import {
+  TestResult,
+  TestResultCalculator,
+} from "./helpers/TestResultCalculator/TestResultCalculator";
 import { getTest, TaskDto, TestDto } from "./TestPage.api";
 
 export interface TestPageProps {
@@ -77,7 +81,9 @@ export const TestView = (props: TestViewProps) => {
       }
     });
 
-    setResult(resultCalculator.calculate(correctAnswersCount, test.tasks.length))
+    setResult(
+      resultCalculator.calculate(correctAnswersCount, test.tasks.length)
+    );
   };
 
   const currentStepIndex = test.tasks.findIndex(
@@ -85,24 +91,20 @@ export const TestView = (props: TestViewProps) => {
   );
   const x = currentStepIndex !== undefined && currentStepIndex > -1;
 
-  const isFirstTask = x ? currentStepIndex === 0 : undefined;
+  const isFirstTask = x ? currentStepIndex === 0 : false;
   const isLastTask =
-    x && test.tasks ? currentStepIndex === test.tasks.length - 1 : undefined;
+    x && test.tasks ? currentStepIndex === test.tasks.length - 1 : false;
   const isAnswered = currentTask ? !!answers.get(currentTask.id) : false;
 
   if (result !== undefined) {
-    const percentageScore =  result.score * 100;
+    const percentageScore = result.score * 100;
     return (
       <VStack spacing={3}>
         <Container maxW="container.sm">
           <Box paddingTop={3} paddingBottom={3}>
             <Heading as="h2">{result.title}</Heading>
-            <Text fontSize="md">
-              {result.description}
-            </Text>
-            <Text fontSize="md">
-              {`Has Passed: ${result.hasPassed}`}
-            </Text>
+            <Text fontSize="md">{result.description}</Text>
+            <Text fontSize="md">{`Has Passed: ${result.hasPassed}`}</Text>
           </Box>
           <Box paddingTop={3} paddingBottom={3}>
             <CircularProgress value={percentageScore} width="200px">
@@ -112,7 +114,7 @@ export const TestView = (props: TestViewProps) => {
           <Button>TODO: implement reset form</Button>
         </Container>
       </VStack>
-    )
+    );
   }
 
   return (
@@ -129,26 +131,14 @@ export const TestView = (props: TestViewProps) => {
           task={currentTask}
           onChange={updateAnswers}
         />
-        <HStack spacing={2}>
-          <Button
-            disabled={isFirstTask}
-            onClick={() => handleGoToStep("previous")}
-          >
-            Go to previous task
-          </Button>
-          {isLastTask ? (
-            <Button disabled={!isAnswered} onClick={handleSubmitTest}>
-              submit test
-            </Button>
-          ) : (
-            <Button
-              disabled={!isAnswered}
-              onClick={() => handleGoToStep("next")}
-            >
-              Go to next task
-            </Button>
-          )}
-        </HStack>
+        <TestNavigator
+          isFirstTask={isFirstTask}
+          isLastTask={isLastTask}
+          taskHasAnswer={isAnswered}
+          onGotoNextTask={() => handleGoToStep("next")}
+          onGotoPreviousTask={() => handleGoToStep("previous")}
+          onSubmit={handleSubmitTest}
+        />
       </Container>
     </VStack>
   );
@@ -174,7 +164,10 @@ export const TestPage = (props: TestPageProps) => {
     return assertUnreachable(data);
   }
 
-  const testResultCalculator = new TestResultCalculator(data.passThreshold, data.resultInfos);
+  const testResultCalculator = new TestResultCalculator(
+    data.passThreshold,
+    data.resultInfos
+  );
 
   return <TestView test={data} resultCalculator={testResultCalculator} />;
 };

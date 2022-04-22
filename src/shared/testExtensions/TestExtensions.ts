@@ -9,11 +9,15 @@ declare global {
   }
 }
 
-HTMLElement.prototype.expectTextDisplayed = function (text: string): Promise<HTMLElement> {
+HTMLElement.prototype.expectTextDisplayed = function (
+  text: string
+): Promise<HTMLElement> {
   return findByText(this, text);
 };
 
-HTMLElement.prototype.expectTextDisappeared = function (text: string): Promise<void> {
+HTMLElement.prototype.expectTextDisappeared = function (
+  text: string
+): Promise<void> {
   return waitFor(() => {
     // await text disappears after clicked
     expect(this).not.toHaveTextContent(text);
@@ -21,7 +25,9 @@ HTMLElement.prototype.expectTextDisappeared = function (text: string): Promise<v
 };
 HTMLElement.prototype.expectLoaderDisappeared = function (): Promise<void> {
   return waitFor(() => {
-    expect(this).not.toContainElement(this.getElementsByClassName("ActivityIndicator").item(0) as HTMLElement);
+    expect(this).not.toContainElement(
+      this.getElementsByClassName("ActivityIndicator").item(0) as HTMLElement
+    );
   });
 };
 
